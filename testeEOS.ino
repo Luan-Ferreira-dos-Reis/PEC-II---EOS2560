@@ -10,23 +10,21 @@ Tarefa t1;
 
 void setup() 
 {
-  t1.nome = "piscar";
+  /*t1.nome = "piscar";
   t1.periodo = 20;
   t1.prioridade = 1;
-  t1.codigo = piscar;
-  // Colocamos o pino 12 do Arduino como OUTPUT (saída)
+  t1.codigo = piscar;*/
+  criarTarefa(piscar, "piscar", 20, 1, &t1);
+  // Colocamos o pino 13 do Arduino como OUTPUT (saída)
   pinMode(13, OUTPUT);
  Serial.begin(9600);
- char myString[] = "Essa é a primeira linha";
  }
 
-// Este código é chamado automáticamente pelo Arduino, ficará em
-// loop até que seu Arduino seja desligado
-void loop() 
-{
+void loop() {
+    // Este código irá se repetir eternamente
   t1.codigo();
 
-  // Este código irá se repetir eternamente
+
 }
 
 void piscar(){
