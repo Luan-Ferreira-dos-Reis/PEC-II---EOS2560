@@ -20,7 +20,7 @@ typedef struct{
 }Tarefa;
 
 // assinatura de funções
-void criarTarefa( ptrFunc Xcodigo, char const *Xnome, int Xperiodo, int Xprioridade, Tarefa *novaTarefa);
+void criarTarefa(ptrFunc _codigo, char const *_nome, int _periodo, int _prioridade, Tarefa *novaTarefa);
 
 
 /* *INDENT-OFF* */

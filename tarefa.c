@@ -2,9 +2,9 @@
 
 // funções relacionadas a tarefas
 
-void criarTarefa( ptrFunc Xcodigo, char const *Xnome, int Xperiodo, int Xprioridade, Tarefa *novaTarefa){
-  novaTarefa->nome = Xnome;
-  novaTarefa->codigo = Xcodigo;
-  novaTarefa->periodo = Xperiodo;
-  novaTarefa->prioridade = Xprioridade;
+void criarTarefa( ptrFunc _codigo, char const *_nome, int _periodo, int _prioridade, Tarefa *novaTarefa){
+  novaTarefa->nome = _nome;
+  novaTarefa->codigo = _codigo;
+  novaTarefa->periodo = _periodo;
+  novaTarefa->prioridade = _prioridade;
 }
