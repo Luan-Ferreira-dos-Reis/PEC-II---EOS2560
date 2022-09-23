@@ -1,7 +1,6 @@
-// Preparação do Arduino, este código irá rodar uma única vez
+ // Preparação do Arduino, este código irá rodar uma única vez
 #include "tarefa.h"
 #include "escalonador.h"
-#include<Arduino.h>
 
 #define NUM_TAREFAS 2
 
@@ -23,6 +22,7 @@ void setup()
  //Criação das tarefas
  criarTarefa(piscar, "piscar", 20, 1, &t1);
  criarTarefa(imprimir, "imprimir", 20, 1, &t2);
+ 
  proc[0] = &t1;
  proc[1] = &t2;
 
