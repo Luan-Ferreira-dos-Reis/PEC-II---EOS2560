@@ -4,9 +4,9 @@
 #include <Arduino.h>
 #include <stdio.h>
 
-#define TEMPO_INTERRUPCAO 65500
+#define TEMPO_INTERRUPCAO 0xC2F7
 
-int tarefa_exec; // tarefa em execução
+int tarefa_exec = 0; // tarefa em execução
 
 // rotinas do escalonador
 
@@ -24,18 +24,27 @@ void configuraTimer(){
 
 
 void iniciar_escalonador(Tarefa *proc[], int NUM_TAREFAS){
-  int i;
   while(true){
-    for(i = 0; i<NUM_TAREFAS; i++){
-      proc[i]->codigo();
+    if(tarefa_exec >= NUM_TAREFAS){
+      tarefa_exec = 0;
     }
+    proc[tarefa_exec]->codigo();
   }
 }
 
-/*
+
 ISR(TIMER1_OVF_vect)                              //interrupção do TIMER1 
 {
-  TCNT1 = 65500;                                 // Renicia TIMER
-  Serial.println("interrupção");
+  TCNT1 = TEMPO_INTERRUPCAO;                                 // Renicia TIMER
+  tarefa_exec++;
 }
-*/
+
+
+
+
+/*
+ * for(i = 0; i<NUM_TAREFAS; i++){
+      proc[i]->codigo();
+    }
+ */
+ 
