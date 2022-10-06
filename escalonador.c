@@ -43,10 +43,7 @@ void iniciar(Tarefa *proc[], int NUM_TAREFAS){
 
 //execução do código das tarefas e troca de contexto
 void executar(){
-  while(true){
-    if(tarefa_exec >= quantTarefas){
-      tarefa_exec = 0;
-    }
+  while(true){   
     processos[tarefa_exec]->codigo();
   }
 }
@@ -61,6 +58,9 @@ int calcTempoExec(int periodo){
 ISR(TIMER1_OVF_vect)                              //interrupção do TIMER1 
 {
   //TCNT1 = TEMPO_INTERRUPCAO;                                 // Reinicia TIMER
-  TCNT1 = calcTempoExec(processos[tarefa_exec]->periodo); 
+  if(tarefa_exec >= quantTarefas){
+      tarefa_exec = 0;
+    }
   tarefa_exec++;
+  TCNT1 = calcTempoExec(processos[tarefa_exec]->periodo); 
 }
