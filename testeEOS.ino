@@ -23,20 +23,19 @@ void setup()
  Serial.begin(9600);
  configuraTimer();
 
-
  //Criação das tarefas
  //criarTarefa(piscar, "piscar", 20, 1, &t0);
  criarTarefa(imprimir3, "imprimir3", 20, 1, &t0);
  criarTarefa(imprimir, "imprimir", 20, 1, &t1);
  criarTarefa(imprimir2, "imprimir2", 20, 1, &t2);
- 
+
+ //alocação do endereço das tarefas em um vetor
  proc[0] = &t0;
  proc[1] = &t1;
  proc[2] = &t2;
-
- //configura timer do SO
- //configuraTimer();
- iniciar_escalonador(proc, NUM_TAREFAS);
+ 
+ iniciar(proc, NUM_TAREFAS);
+ executar();
  
  }
 

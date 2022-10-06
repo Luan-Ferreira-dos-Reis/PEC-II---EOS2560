@@ -12,7 +12,7 @@
 typedef void(*ptrFunc)(); 
 
 // estrutura para criação de tarefas
-typedef struct{
+typedef struct {
   char const *nome;                 // nome da tarefa
   ptrFunc codigo;             // código da tarefa
   int periodo;                // periodo disponível de execução 

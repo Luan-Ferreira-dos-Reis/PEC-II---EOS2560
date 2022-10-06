@@ -15,7 +15,9 @@
 
 //assinatura de funções
 void configuraTimer();
-void iniciar_escalonador(Tarefa *proc[], int NUM_TAREFAS);
+void iniciar(Tarefa *proc[], int NUM_TAREFAS);
+int calcTempoExec(int periodo);
+void executar();
 
 /* *INDENT-OFF* */
 #ifdef __cplusplus
