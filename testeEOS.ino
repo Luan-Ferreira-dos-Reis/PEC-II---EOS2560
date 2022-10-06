@@ -21,19 +21,21 @@ void setup()
   // Colocamos o pino 13 do Arduino como OUTPUT (saída)
  pinMode(13, OUTPUT);
  Serial.begin(9600);
- configuraTimer();
+ 
 
  //Criação das tarefas
  //criarTarefa(piscar, "piscar", 20, 1, &t0);
- criarTarefa(imprimir3, "imprimir3", 20, 1, &t0);
- criarTarefa(imprimir, "imprimir", 20, 1, &t1);
- criarTarefa(imprimir2, "imprimir2", 20, 1, &t2);
+ criarTarefa(imprimir3, "imprimir3", 1000, 1, &t0);
+ criarTarefa(imprimir, "imprimir", 1000, 1, &t1);
+ criarTarefa(imprimir2, "imprimir2", 1000, 1, &t2);
 
  //alocação do endereço das tarefas em um vetor
  proc[0] = &t0;
  proc[1] = &t1;
  proc[2] = &t2;
- 
+
+//funções do SO
+ configuraTimer();
  iniciar(proc, NUM_TAREFAS);
  executar();
  
@@ -62,7 +64,8 @@ void piscar(){
 
 
 void imprimir(){
-   Serial.println("tarefa 1");
+    Serial.println("tarefa 1");
+   
 }
 
 void imprimir2(){

@@ -57,18 +57,10 @@ int calcTempoExec(int periodo){
 }
 
 
+//função de interrupção ativada por timer que incrementa o buffer de tarefas
 ISR(TIMER1_OVF_vect)                              //interrupção do TIMER1 
 {
-  TCNT1 = TEMPO_INTERRUPCAO;                                 // Renicia TIMER
+  //TCNT1 = TEMPO_INTERRUPCAO;                                 // Reinicia TIMER
   tarefa_exec++;
+  TCNT1 = calcTempoExec(processos[tarefa_exec]->periodo); 
 }
-
-
-
-
-/*
- * for(i = 0; i<NUM_TAREFAS; i++){
-      proc[i]->codigo();
-    }
- */
- 
