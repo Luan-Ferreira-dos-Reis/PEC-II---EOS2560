@@ -25,9 +25,9 @@ void setup()
 
  //Criação das tarefas
  //criarTarefa(piscar, "piscar", 20, 1, &t0);
- criarTarefa(imprimir3, "imprimir3", 1000, 1, &t0);
- criarTarefa(imprimir, "imprimir", 1000, 1, &t1);
- criarTarefa(imprimir2, "imprimir2", 1000, 1, &t2);
+ criarTarefa(imprimir3, "imprimir3", 200, 1, &t0);
+ criarTarefa(imprimir, "imprimir", 100, 1, &t1);
+ criarTarefa(imprimir2, "imprimir2", 500, 1, &t2);
 
  //alocação do endereço das tarefas em um vetor
  proc[0] = &t0;

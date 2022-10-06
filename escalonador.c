@@ -61,6 +61,6 @@ int calcTempoExec(int periodo){
 ISR(TIMER1_OVF_vect)                              //interrupção do TIMER1 
 {
   //TCNT1 = TEMPO_INTERRUPCAO;                                 // Reinicia TIMER
-  tarefa_exec++;
   TCNT1 = calcTempoExec(processos[tarefa_exec]->periodo); 
+  tarefa_exec++;
 }
