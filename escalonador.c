@@ -13,7 +13,7 @@
 #endif
 
 //constantes do sistema
-#define TEMPO_INTERRUPCAO 49911
+#define TEMPO_INTERRUPCAO 0xFFF0
 #define SIM 1
 #define NAO 0
 
@@ -59,6 +59,7 @@ void executar(){
     if(processos[tarefa_exec]->execucao == SIM){
       processos[tarefa_exec]->codigo();
       prazoTarefas[tarefa_exec] = processos[tarefa_exec]->periodo;
+      processos[tarefa_exec]->execucao = NAO;
     } 
     tarefa_exec++;
     if(tarefa_exec >= quantTarefas){
@@ -87,7 +88,7 @@ void relogio(){
 ISR(TIMER1_OVF_vect)                              //interrupção do TIMER1 
 {
   relogio();
-  TCNT1 = 65520; //reinicia timer
+  TCNT1 = TEMPO_INTERRUPCAO; //reinicia timer
 }
 
 /* *INDENT-OFF* */

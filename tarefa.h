@@ -20,9 +20,6 @@ typedef struct {
   int execucao;                 // se em execução
 }Tarefa;
 
-// assinatura de funções
-void criarTarefa(ptrFunc _codigo, char const *_nome, int _periodo, int _prioridade, Tarefa *novaTarefa);
-
 
 /* *INDENT-OFF* */
 #ifdef __cplusplus

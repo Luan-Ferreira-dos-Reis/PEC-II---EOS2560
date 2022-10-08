@@ -1,8 +1,6 @@
 #ifndef ESCALONADOR_H
 #define ESCALONADOR_H
 
-
-
 /* *INDENT-OFF* */
 #ifdef __cplusplus
     extern "C" {
