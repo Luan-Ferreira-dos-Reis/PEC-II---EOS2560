@@ -5,28 +5,28 @@
 #define NUM_TAREFAS 3
 
 //Assinatura das tarefas
-void piscar();
 void imprimir();
 void imprimir2();
 void imprimir3();
- 
+void piscar();
+
+//handle das tarefas 
 Tarefa t0;
 Tarefa t1;
 Tarefa t2;
-//Tarefa t3;
+Tarefa t3;
 
 void setup() 
 {
   // Colocamos o pino 13 do Arduino como OUTPUT (saída)
  pinMode(13, OUTPUT);
  Serial.begin(9600);
- 
 
  //Criação das tarefas
-
- add_tarefa(imprimir3, "imprimir3", 100, 1, &t0);
- add_tarefa(imprimir, "imprimir", 200, 1, &t1);
- add_tarefa(imprimir2, "imprimir2", 300, 1, &t2);
+ add_tarefa(imprimir, "imprimir", 1000, 1, &t0);
+ add_tarefa(imprimir2, "imprimir2", 1000, 1, &t1);
+ add_tarefa(imprimir3, "imprimir3", 1000, 1, &t2);
+ add_tarefa(piscar, "piscar", 1000, 1, &t3);
 
 //funções do SO
  configuraTimer();
@@ -57,14 +57,14 @@ void piscar(){
 
 
 void imprimir(){
-    Serial.println("tarefa 1");
+    Serial.println("t1");
    
 }
 
 void imprimir2(){
-   Serial.println("tarefa 2");
+   Serial.println("t2");
 }
 
 void imprimir3(){
-   Serial.println("tarefa 3");
+   Serial.println("t3");
 }

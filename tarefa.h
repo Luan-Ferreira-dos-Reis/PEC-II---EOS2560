@@ -17,7 +17,7 @@ typedef struct {
   ptrFunc codigo;             // código da tarefa
   int periodo;                // periodo disponível de execução 
   int prioridade;              // nível de prioridade(quanto menor mais prioritário)
-  bool execucao;                 // se em execução
+  int execucao;                 // se em execução
 }Tarefa;
 
 // assinatura de funções

@@ -15,9 +15,9 @@
 
 //assinatura de funções
 void configuraTimer();
-//void iniciar(Tarefa *proc[], int NUM_TAREFAS);
 void add_tarefa( ptrFunc _codigo, char const *_nome, int _periodo, int _prioridade,Tarefa *novaTarefa);
 int calcTempoExec(int periodo);
+void relogio();
 void executar();
 
 /* *INDENT-OFF* */
