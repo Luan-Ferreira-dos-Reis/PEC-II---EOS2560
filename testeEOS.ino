@@ -28,7 +28,6 @@ void setup()
  add_tarefa(piscar, "piscar", 2000, 1, &t3);
 
 //funções do SO
- configuraTimer();
  executar();
  
  }

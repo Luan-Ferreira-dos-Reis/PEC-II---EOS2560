@@ -21,7 +21,7 @@
 int tarefa_exec = 0;  // tarefa em execução
 Tarefa **processos;    // buffer de tarefas
 int quantTarefas = 0; //quantidade de tarefas
-int *prazoTarefas;  //deadlines para execução de cada tarefa
+int *prazoTarefas;  //deadlines para execução de cada tarefa(em milisegeundos)
 
 //configuração do timer do sistema
 void configuraTimer(){
@@ -29,7 +29,7 @@ void configuraTimer(){
   TCCR1B = 0;                        //limpa registrador
   TCCR1B |= (1<<CS10)|(1 << CS12);   // configura prescaler para 1024: CS12 = 1 e CS10 = 1
 
-  TCNT1 = TEMPO_INTERRUPCAO;         // incia timer com valor para que estouro ocorra em 1 segundo
+  TCNT1 = TEMPO_INTERRUPCAO;         // incia timer com valor para que estouro ocorra em 1 milisegundo
                                     
   TIMSK1 |= (1 << TOIE1);           // habilita a interrupção do TIMER1
 }
@@ -55,6 +55,7 @@ void add_tarefa( ptrFunc _codigo, char const *_nome, int _periodo, int _priorida
 
 //execução do código das tarefas e troca de contexto
 void executar(){
+  configuraTimer();
   while(true){   
     if(processos[tarefa_exec]->execucao == SIM){
       processos[tarefa_exec]->codigo();
