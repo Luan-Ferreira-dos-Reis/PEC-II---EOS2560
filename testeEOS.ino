@@ -2,8 +2,6 @@
 #include "tarefa.h"
 #include "escalonador.h"
 
-#define NUM_TAREFAS 3
-
 //Assinatura das tarefas
 void imprimir();
 void imprimir2();
@@ -23,9 +21,10 @@ void setup()
  Serial.begin(9600);
 
  //Criação das tarefas
- add_tarefa(imprimir, "imprimir", 1000, 1, &t0);
- add_tarefa(imprimir2, "imprimir2", 1000, 1, &t1);
- add_tarefa(imprimir3, "imprimir3", 1000, 1, &t2);
+ //add_tarefa(codigo, "nome_da_funcao", periodo, prioridade, &endereco_da_tarefa);
+ add_tarefa(imprimir, "imprimir", 100, 1, &t0);
+ add_tarefa(imprimir2, "imprimir2", 100, 1, &t1);
+ add_tarefa(imprimir3, "imprimir3", 100, 1, &t2);
  add_tarefa(piscar, "piscar", 1000, 1, &t3);
 
 //funções do SO
@@ -39,15 +38,14 @@ void loop() {
 }
 
 //Rotinas das tarefas
-
 void piscar(){
-  // Ativamos o pino 12 (colocando 5v nele)  
+  // Ativamos o pino 13 (colocando 5v nele)  
   digitalWrite(13, HIGH);
   
   // Aguardamos 1 segundo
   delay(1000);
 
-  // Desligamos o pino 12
+  // Desligamos o pino 13
   digitalWrite(13, LOW);
 
   // Aguardamos mais um segundo
@@ -57,14 +55,14 @@ void piscar(){
 
 
 void imprimir(){
-    Serial.println("t1");
+    Serial.println("tarefa1");
    
 }
 
 void imprimir2(){
-   Serial.println("t2");
+   Serial.println("tarefa2");
 }
 
 void imprimir3(){
-   Serial.println("t3");
+   Serial.println("tarefa3");
 }

@@ -72,6 +72,7 @@ int calcTempoExec(int periodo){
   return 65536 - (15625/(1000/periodo)); //  65536-(16MHz/1024/frequencia)
 }
 
+//relogio do sistema(ou temporizador) a cada interrupção do timer decrementa o prazo restante para execução de tarefas
 void relogio(){
   for(int i = 0; i < quantTarefas; i++){
     prazoTarefas[i]--;
@@ -82,11 +83,11 @@ void relogio(){
 }
 
 
-//função de interrupção ativada por timer que incrementa o buffer de tarefas
+//função de interrupção ativada por timer que ativa a função relogio do sistema
 ISR(TIMER1_OVF_vect)                              //interrupção do TIMER1 
 {
   relogio();
-  TCNT1 = 65530;
+  TCNT1 = 65520; //reinicia timer
 }
 
 /* *INDENT-OFF* */
