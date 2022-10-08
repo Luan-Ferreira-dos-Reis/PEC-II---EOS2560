@@ -28,17 +28,17 @@ void configuraTimer(){
   TIMSK1 |= (1 << TOIE1);           // habilita a interrupção do TIMER1
 }
 
-//inicialização do sistema
-//função que importa o ambiente de execução(nº de tarefas, escopo das tarefas, etc) para facilitar a execução
-void iniciar(Tarefa *proc[], int NUM_TAREFAS){
-  int i;
-  quantTarefas = NUM_TAREFAS;
-  for (i = 0; i < NUM_TAREFAS; i++){
-    processos[i] = (Tarefa*) malloc(sizeof(Tarefa));
-  }
- processos = proc;
-
+//adicionar tarefa no sistemas
+void add_tarefa( ptrFunc _codigo, char const *_nome, int _periodo, int _prioridade,Tarefa *novaTarefa){
+  novaTarefa->nome = _nome;
+  novaTarefa->codigo = _codigo;
+  novaTarefa->periodo = _periodo;
+  novaTarefa->prioridade = _prioridade;
+  novaTarefa->execucao = false;
   
+  processos = (Tarefa**) realloc(processos,sizeof(Tarefa));
+  processos[quantTarefas] = novaTarefa;
+  quantTarefas++;
 }
 
 //execução do código das tarefas e troca de contexto

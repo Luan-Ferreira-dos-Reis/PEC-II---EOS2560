@@ -13,8 +13,7 @@ void imprimir3();
 Tarefa t0;
 Tarefa t1;
 Tarefa t2;
-Tarefa *proc[NUM_TAREFAS];
-
+//Tarefa t3;
 
 void setup() 
 {
@@ -24,19 +23,13 @@ void setup()
  
 
  //Criação das tarefas
- //criarTarefa(piscar, "piscar", 20, 1, &t0);
- criarTarefa(imprimir3, "imprimir3", 100, 1, &t0);
- criarTarefa(imprimir, "imprimir", 200, 1, &t1);
- criarTarefa(imprimir2, "imprimir2", 300, 1, &t2);
 
- //alocação do endereço das tarefas em um vetor
- proc[0] = &t0;
- proc[1] = &t1;
- proc[2] = &t2;
+ add_tarefa(imprimir3, "imprimir3", 100, 1, &t0);
+ add_tarefa(imprimir, "imprimir", 200, 1, &t1);
+ add_tarefa(imprimir2, "imprimir2", 300, 1, &t2);
 
 //funções do SO
  configuraTimer();
- iniciar(proc, NUM_TAREFAS);
  executar();
  
  }
