@@ -22,12 +22,13 @@ void setup()
 
  //Criação das tarefas
  //add_tarefa(codigo, "nome_da_funcao", periodo, prioridade, &endereco_da_tarefa);
- add_tarefa(imprimir, "imprimir", 1000, 1, &t0);
+ add_tarefa(imprimir, "imprimir", 10, 1, &t0);
  add_tarefa(imprimir2, "imprimir2", 200, 1, &t1);
  add_tarefa(imprimir3, "imprimir3", 50, 1, &t2);
  add_tarefa(piscar, "piscar", 2000, 1, &t3);
 
 //funções do SO
+ setupEOS2560();
  executar();
  
  }

@@ -53,13 +53,16 @@ void add_tarefa( ptrFunc _codigo, char const *_nome, int _periodo, int _priorida
   quantTarefas++;
 }
 
+void setupEOS2560(){
+  configuraTimer();
+}
+
 //execução do código das tarefas e troca de contexto
 void executar(){
-  configuraTimer();
   while(true){   
-    if(processos[tarefa_exec]->execucao == SIM){
-      processos[tarefa_exec]->codigo();
-      prazoTarefas[tarefa_exec] = processos[tarefa_exec]->periodo;
+    if(processos[tarefa_exec]->execucao == SIM){                                //tarefa deve ser executada
+      processos[tarefa_exec]->codigo();                                         //execucao da tarefa
+      prazoTarefas[tarefa_exec] = processos[tarefa_exec]->periodo;              //reinicia prazo para execução
       processos[tarefa_exec]->execucao = NAO;
     } 
     tarefa_exec++;
