@@ -168,7 +168,6 @@ void setupEOS2560(){
 void executar(){
   while(true){   
     if(processos[tarefa_exec]->estado == ESPERA){                                //tarefa deve ser executada
-      //portRESTORE_CONTEXT();//
       processos[tarefa_exec]->estado = EXECUCAO;                                //processo está em execução
       processos[tarefa_exec]->codigo();                                         //execucao da tarefa
       prazoTarefas[tarefa_exec] = processos[tarefa_exec]->periodo;              //reinicia prazo para execução
@@ -202,6 +201,9 @@ void verificaTarefas(){
         if(processos[i]->estado == ESPERA){             //outra tarefa além da que está em execução precisa executar
           processos[tarefa_exec]->estado = ESPERA;    // tarefa que estava em execução entra em estado de espera
           tarefa_exec = i;
+          portSAVE_CONTEXT();
+            executar();                                                      //reinicia tempo em execução
+          portRESTORE_CONTEXT();
         }
     }
   }
@@ -212,7 +214,6 @@ void verificaTarefas(){
 //função de interrupção ativada por timer que ativa a função relogio do sistema
 ISR(TIMER1_OVF_vect)                              //interrupção do TIMER1 
 {
-  //portSAVE_CONTEXT();//
   verificaTarefas();
   relogio();
   TCNT1 = TEMPO_INTERRUPCAO; //reinicia timer

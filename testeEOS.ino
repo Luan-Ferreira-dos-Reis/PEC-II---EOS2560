@@ -22,10 +22,10 @@ void setup()
 
  //Criação das tarefas
  //add_tarefa(codigo, "nome_da_funcao", periodo, prioridade, &endereco_da_tarefa);
- add_tarefa(imprimir, "imprimir", 20, 1, &t0);
- add_tarefa(imprimir2, "imprimir2", 100, 1, &t1);
- add_tarefa(imprimir3, "imprimir3", 200, 1, &t2);
- add_tarefa(piscar, "piscar", 1000, 1, &t3);
+ add_tarefa(imprimir, "imprimir", 100, 1, &t0);
+ add_tarefa(imprimir2, "imprimir2", 200, 1, &t1);
+ add_tarefa(imprimir3, "imprimir3", 400, 1, &t2);
+ add_tarefa(piscar, "piscar", 100, 1, &t3);
 
 //funções do SO
  setupEOS2560();
@@ -39,6 +39,7 @@ void loop() {
 
 //Rotinas das tarefas
 void piscar(){
+   while(true){
   // Ativamos o pino 13 (colocando 5v nele)  
   digitalWrite(13, HIGH);
   
@@ -51,6 +52,7 @@ void piscar(){
   // Aguardamos mais um segundo
   delay(1000);
   //Serial.println("tarefa 0");
+   }
 }
 
 
@@ -60,9 +62,9 @@ void imprimir(){
 }
 
 void imprimir2(){
-
-   Serial.println("tarefa2");
-    
+ //while(true){
+    Serial.println("tarefa2");
+  //}  
 }
 
 void imprimir3(){
