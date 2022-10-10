@@ -17,7 +17,9 @@ typedef struct {
   ptrFunc codigo;             // código da tarefa
   int periodo;                // periodo disponível de execução 
   int prioridade;              // nível de prioridade(quanto menor mais prioritário)
-  int execucao;                 // se em execução
+
+  int estado;                 //estado do processo BLOQUEADO (0) EXECUCAO(1) ESPERA(2)
+  volatile unsigned long pilha;  //pilha da tarefa
 }Tarefa;
 
 

@@ -104,16 +104,25 @@ asm volatile (\
 "sei \n\t" ::);
 
 //constantes do sistema
-#define TEMPO_INTERRUPCAO 0xFFF0
-#define SIM 1
+#define TEMPO_INTERRUPCAO 0xFFF0   //tempo entre interrupções do timer
+#define TEMPO_MAX_EXECUCAO 10      //tempo máximo em execucao em milisegundos que a tarefa pode executar com concorrência
+
+#define SIM 1                 // variáveis genéricas booleanas
 #define NAO 0
+
+#define BLOQUEADO 0              // possível estado do processo
+#define EXECUCAO 1
+#define ESPERA 2
+
+
 
 //variáveis globais
 int tarefa_exec = 0;  // tarefa em execução
+int tempo_em_exec = 0; //tempo em execução do processo atual
 Tarefa **processos;    // buffer de tarefas
 int quantTarefas = 0; //quantidade de tarefas
 int *prazoTarefas;  //deadlines para execução de cada tarefa(em milisegeundos)
-volatile unsigned long pxCurrentTCB;
+volatile unsigned long pxCurrentTCB;   //variável que armazena o estado dos registradores
 
 
 
@@ -135,7 +144,8 @@ void add_tarefa( ptrFunc _codigo, char const *_nome, int _periodo, int _priorida
   novaTarefa->codigo = _codigo;
   novaTarefa->periodo = _periodo;
   novaTarefa->prioridade = _prioridade;
-  novaTarefa->execucao = NAO;
+
+  novaTarefa->estado = BLOQUEADO;
 
   //alocando processo no buffer de processos
   processos = (Tarefa**) realloc(processos,sizeof(Tarefa));
@@ -144,6 +154,8 @@ void add_tarefa( ptrFunc _codigo, char const *_nome, int _periodo, int _priorida
   //alocando vetor com deadline das tarefas
   prazoTarefas = (int*) realloc(prazoTarefas,sizeof(int));
   prazoTarefas[quantTarefas] = processos[quantTarefas]->periodo;
+
+
   
   quantTarefas++;
 }
@@ -155,12 +167,15 @@ void setupEOS2560(){
 //execução do código das tarefas e troca de contexto
 void executar(){
   while(true){   
-    if(processos[tarefa_exec]->execucao == SIM){                                //tarefa deve ser executada
+    if(processos[tarefa_exec]->estado == ESPERA){                                //tarefa deve ser executada
       //portRESTORE_CONTEXT();//
+      processos[tarefa_exec]->estado = EXECUCAO;                                //processo está em execução
       processos[tarefa_exec]->codigo();                                         //execucao da tarefa
       prazoTarefas[tarefa_exec] = processos[tarefa_exec]->periodo;              //reinicia prazo para execução
-      processos[tarefa_exec]->execucao = NAO;
+      processos[tarefa_exec]->estado = BLOQUEADO;
+      tempo_em_exec = 0;                                                       //reinicia tempo em execução
     } 
+    //proxima tarefa
     tarefa_exec++;
     if(tarefa_exec >= quantTarefas){
       tarefa_exec = 0;
@@ -168,19 +183,29 @@ void executar(){
   }
 }
 
-//calculo do tempo para execução de cada tarefa
-int calcTempoExec(int periodo){
-  return 65536 - (15625/(1000/periodo)); //  65536-(16MHz/1024/frequencia)
-}
+
 
 //relogio do sistema(ou temporizador) a cada interrupção do timer decrementa o prazo restante para execução de tarefas
 void relogio(){
+  tempo_em_exec++;
   for(int i = 0; i < quantTarefas; i++){
     prazoTarefas[i]--;
-    if(prazoTarefas[i] == 0){
-       processos[i]->execucao = SIM;
+    if(prazoTarefas[i] == 0){                        //prazo da tarefa venceu
+      processos[i]->estado = ESPERA;                   //muda status do processo para em espera
     }
   }
+}
+
+void verificaTarefas(){
+  if(tempo_em_exec >= TEMPO_MAX_EXECUCAO){
+      for(int i = 0; i < quantTarefas; i++){
+        if(processos[i]->estado == ESPERA){             //outra tarefa além da que está em execução precisa executar
+          processos[tarefa_exec]->estado = ESPERA;    // tarefa que estava em execução entra em estado de espera
+          tarefa_exec = i;
+        }
+    }
+  }
+   
 }
 
 
@@ -188,6 +213,7 @@ void relogio(){
 ISR(TIMER1_OVF_vect)                              //interrupção do TIMER1 
 {
   //portSAVE_CONTEXT();//
+  verificaTarefas();
   relogio();
   TCNT1 = TEMPO_INTERRUPCAO; //reinicia timer
 }
