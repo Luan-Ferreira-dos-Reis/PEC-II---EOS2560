@@ -39,7 +39,7 @@ void loop() {
 
 //Rotinas das tarefas
 void piscar(){
-   while(true){
+   //while(true){
   // Ativamos o pino 13 (colocando 5v nele)  
   digitalWrite(13, HIGH);
   
@@ -52,21 +52,27 @@ void piscar(){
   // Aguardamos mais um segundo
   delay(1000);
   //Serial.println("tarefa 0");
-   }
+   //}
 }
 
 
 void imprimir(){
+ // while(true){
     Serial.println("tarefa1"); 
-   
+   // delay(1000);
+ // } 
 }
 
 void imprimir2(){
  //while(true){
     Serial.println("tarefa2");
+   // delay(1000);
   //}  
 }
 
 void imprimir3(){
+ while(true){
    Serial.println("tarefa3");
+   delay(1000);
+ }  
 }

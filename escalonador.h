@@ -15,6 +15,7 @@
 void configuraTimer();
 void add_tarefa( ptrFunc _codigo, char const *_nome, int _periodo, int _prioridade,Tarefa *novaTarefa);
 void setupEOS2560();
+int proxima_tarefa();
 void relogio();
 void verificaTarefas();
 void executar();

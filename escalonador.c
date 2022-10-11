@@ -105,7 +105,7 @@ asm volatile (\
 
 //constantes do sistema
 #define TEMPO_INTERRUPCAO 0xFFF0   //tempo entre interrupções do timer
-#define TEMPO_MAX_EXECUCAO 10      //tempo máximo em execucao em milisegundos que a tarefa pode executar com concorrência
+#define TEMPO_MAX_EXECUCAO 50      //tempo máximo em execucao em milisegundos que a tarefa pode executar com concorrência
 
 #define SIM 1                 // variáveis genéricas booleanas
 #define NAO 0
@@ -166,7 +166,7 @@ void setupEOS2560(){
 
 //execução do código das tarefas e troca de contexto
 void executar(){
-  while(true){   
+  while(true){  
     if(processos[tarefa_exec]->estado == ESPERA){                                //tarefa deve ser executada
       processos[tarefa_exec]->estado = EXECUCAO;                                //processo está em execução
       processos[tarefa_exec]->codigo();                                         //execucao da tarefa
@@ -179,13 +179,26 @@ void executar(){
     if(tarefa_exec >= quantTarefas){
       tarefa_exec = 0;
     }
+    
   }
 }
 
 
+//procura a tarefa com menor prazo para executar
+int proxima_tarefa(){
+  int menor = prazoTarefas[0];
+  int i_menor = 0;
+  for (int i = 0; i < quantTarefas; i++){
+    if(prazoTarefas[i] <= menor){
+      i_menor = i;
+    }
+  }
+  return i_menor;
+}
 
 //relogio do sistema(ou temporizador) a cada interrupção do timer decrementa o prazo restante para execução de tarefas
 void relogio(){
+  //relogio
   tempo_em_exec++;
   for(int i = 0; i < quantTarefas; i++){
     prazoTarefas[i]--;
@@ -193,21 +206,23 @@ void relogio(){
       processos[i]->estado = ESPERA;                   //muda status do processo para em espera
     }
   }
+  //relogio
 }
 
+
+//verifica se alguma tarefa tomou a cpu e não permite execução de outros
 void verificaTarefas(){
   if(tempo_em_exec >= TEMPO_MAX_EXECUCAO){
-      for(int i = 0; i < quantTarefas; i++){
-        if(processos[i]->estado == ESPERA){             //outra tarefa além da que está em execução precisa executar
-          processos[tarefa_exec]->estado = ESPERA;    // tarefa que estava em execução entra em estado de espera
-          tarefa_exec = i;
+          processos[tarefa_exec]->estado = ESPERA;
+          tempo_em_exec = 0;
+          tarefa_exec++;
+          if(tarefa_exec >= quantTarefas){
+            tarefa_exec = 0;
+          }
           portSAVE_CONTEXT();
             executar();                                                      //reinicia tempo em execução
           portRESTORE_CONTEXT();
-        }
-    }
-  }
-   
+  }   
 }
 
 
