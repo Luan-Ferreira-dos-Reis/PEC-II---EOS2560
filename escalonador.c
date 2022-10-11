@@ -105,7 +105,7 @@ asm volatile (\
 
 //constantes do sistema
 #define TEMPO_INTERRUPCAO 0xFFF0   //tempo entre interrupções do timer
-#define TEMPO_MAX_EXECUCAO 50      //tempo máximo em execucao em milisegundos que a tarefa pode executar com concorrência
+#define TEMPO_MAX_EXECUCAO 100      //tempo máximo em execucao em milisegundos que a tarefa pode executar com concorrência
 
 #define SIM 1                 // variáveis genéricas booleanas
 #define NAO 0
@@ -201,7 +201,9 @@ void relogio(){
   //relogio
   tempo_em_exec++;
   for(int i = 0; i < quantTarefas; i++){
-    prazoTarefas[i]--;
+    if( prazoTarefas[i] > 0){
+      prazoTarefas[i]--;
+    }
     if(prazoTarefas[i] == 0){                        //prazo da tarefa venceu
       processos[i]->estado = ESPERA;                   //muda status do processo para em espera
     }
@@ -213,7 +215,8 @@ void relogio(){
 //verifica se alguma tarefa tomou a cpu e não permite execução de outros
 void verificaTarefas(){
   if(tempo_em_exec >= TEMPO_MAX_EXECUCAO){
-          processos[tarefa_exec]->estado = ESPERA;
+          prazoTarefas[tarefa_exec] = processos[tarefa_exec]->periodo;              //reinicia prazo para execução
+          processos[tarefa_exec]->estado = BLOQUEADO;                                                       //reinicia tempo em execução
           tempo_em_exec = 0;
           tarefa_exec++;
           if(tarefa_exec >= quantTarefas){
