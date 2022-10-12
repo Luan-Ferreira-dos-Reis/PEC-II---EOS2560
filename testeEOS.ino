@@ -24,7 +24,7 @@ void setup()
  //add_tarefa(codigo, "nome_da_funcao", periodo, prioridade, &endereco_da_tarefa);
  add_tarefa(imprimir, "imprimir", 100, 1, &t0);
  add_tarefa(imprimir2, "imprimir2", 200, 1, &t1);
- add_tarefa(imprimir3, "imprimir3", 30, 1, &t2);
+ add_tarefa(imprimir3, "imprimir3", 300, 1, &t2);
  add_tarefa(piscar, "piscar", 100, 1, &t3);
 
 //funções do SO
@@ -39,42 +39,43 @@ void loop() {
 
 //Rotinas das tarefas
 void piscar(){
-   //while(true){
+   
   // Ativamos o pino 13 (colocando 5v nele)  
   Serial.println("piscar inicio");
   digitalWrite(13, HIGH);
   
   // Aguardamos 1 segundo
-  delay(1000);
+  delay(100);
 
   // Desligamos o pino 13
   digitalWrite(13, LOW);
 
   // Aguardamos mais um segundo
-  delay(1000);
+  delay(100);
    Serial.println("piscar fim");
   
-  // }
+ 
 }
 
 
 void imprimir(){
-  //while(true){
+
     Serial.println("tarefa1"); 
-    //delay(1000);
-  //} 
+    delay(100);
+    Serial.println("tarefa1 fim"); 
 }
 
 void imprimir2(){
-// while(true){
+
     Serial.println("tarefa2");
-    //delay(1000);
-  //}  
+    delay(200);
+    Serial.println("tarefa2 fim");
 }
 
 void imprimir3(){
- //while(true){
+
    Serial.println("tarefa3");
-   //delay(1000);
- //}  
+   delay(300);
+   Serial.println("tarefa3 fim");
+  
 }
