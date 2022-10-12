@@ -1,4 +1,4 @@
- // Preparação do Arduino, este código irá rodar uma única vez
+// Preparação do Arduino, este código irá rodar uma única vez
 #include "tarefa.h"
 #include "escalonador.h"
 
@@ -24,8 +24,8 @@ void setup()
  //add_tarefa(codigo, "nome_da_funcao", periodo, prioridade, &endereco_da_tarefa);
  add_tarefa(imprimir, "imprimir", 100, 1, &t0);
  add_tarefa(imprimir2, "imprimir2", 200, 1, &t1);
- add_tarefa(imprimir3, "imprimir3", 400, 1, &t2);
- add_tarefa(piscar, "piscar", 50, 1, &t3);
+ add_tarefa(imprimir3, "imprimir3", 30, 1, &t2);
+ add_tarefa(piscar, "piscar", 100, 1, &t3);
 
 //funções do SO
  setupEOS2560();
@@ -39,8 +39,9 @@ void loop() {
 
 //Rotinas das tarefas
 void piscar(){
-   while(true){
+   //while(true){
   // Ativamos o pino 13 (colocando 5v nele)  
+  Serial.println("piscar inicio");
   digitalWrite(13, HIGH);
   
   // Aguardamos 1 segundo
@@ -51,8 +52,9 @@ void piscar(){
 
   // Aguardamos mais um segundo
   delay(1000);
-  //Serial.println("tarefa 0");
-   }
+   Serial.println("piscar fim");
+  
+  // }
 }
 
 
@@ -60,14 +62,14 @@ void imprimir(){
   //while(true){
     Serial.println("tarefa1"); 
     //delay(1000);
- // } 
+  //} 
 }
 
 void imprimir2(){
- while(true){
+// while(true){
     Serial.println("tarefa2");
-    delay(1000);
- }  
+    //delay(1000);
+  //}  
 }
 
 void imprimir3(){

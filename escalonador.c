@@ -19,7 +19,7 @@
 
 // Macros para salvar e restaurar o contexto
 #define portRESTORE_CONTEXT()\
-asm volatile (\
+;asm volatile (\
 "cli \n\t"\
 "out __SP_L__, %A0 \n\t"\
 "out __SP_H__, %B0 \n\t"\
@@ -175,11 +175,7 @@ void executar(){
       tempo_em_exec = 0;                                                       //reinicia tempo em execução
     } 
     //proxima tarefa
-    tarefa_exec++;
-    if(tarefa_exec >= quantTarefas){
-      tarefa_exec = 0;
-    }
-    
+    tarefa_exec  = proxima_tarefa(); 
   }
 }
 
@@ -189,8 +185,9 @@ int proxima_tarefa(){
   int menor = prazoTarefas[0];
   int i_menor = 0;
   for (int i = 0; i < quantTarefas; i++){
-    if(prazoTarefas[i] <= menor){
+    if(prazoTarefas[i] < menor){
       i_menor = i;
+      menor = prazoTarefas[i];
     }
   }
   return i_menor;
@@ -201,9 +198,7 @@ void relogio(){
   //relogio
   tempo_em_exec++;
   for(int i = 0; i < quantTarefas; i++){
-    if( prazoTarefas[i] > 0){
-      prazoTarefas[i]--;
-    }
+    prazoTarefas[i]--;  
     if(prazoTarefas[i] == 0){                        //prazo da tarefa venceu
       processos[i]->estado = ESPERA;                   //muda status do processo para em espera
     }
@@ -215,15 +210,12 @@ void relogio(){
 //verifica se alguma tarefa tomou a cpu e não permite execução de outros
 void verificaTarefas(){
   if(tempo_em_exec >= TEMPO_MAX_EXECUCAO){
-          prazoTarefas[tarefa_exec] = processos[tarefa_exec]->periodo;              //reinicia prazo para execução
-          processos[tarefa_exec]->estado = BLOQUEADO;                                                       //reinicia tempo em execução
+          prazoTarefas[tarefa_exec] = processos[tarefa_exec]->periodo;            
+          processos[tarefa_exec]->estado = BLOQUEADO;                                                       
           tempo_em_exec = 0;
-          tarefa_exec++;
-          if(tarefa_exec >= quantTarefas){
-            tarefa_exec = 0;
-          }
+          tarefa_exec  = proxima_tarefa();
           portSAVE_CONTEXT();
-            executar();                                                      //reinicia tempo em execução
+            processos[tarefa_exec]->codigo()//reinicia tempo em execução
           portRESTORE_CONTEXT();
   }   
 }
