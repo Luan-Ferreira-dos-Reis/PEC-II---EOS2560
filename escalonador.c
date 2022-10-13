@@ -215,7 +215,7 @@ void verificaTarefas(){
           tempo_em_exec = 0;
           tarefa_exec  = proxima_tarefa();
           portSAVE_CONTEXT();
-            processos[tarefa_exec]->codigo()//reinicia tempo em execução
+            processos[tarefa_exec]->codigo()//reinicia tempo em execução    
           portRESTORE_CONTEXT();
   }   
 }
