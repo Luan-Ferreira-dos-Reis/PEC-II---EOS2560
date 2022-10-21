@@ -28,10 +28,10 @@ void setup()
 
  //Criação das tarefas
  //add_tarefa(codigo, "nome_da_funcao", periodo, prioridade, &endereco_da_tarefa);
- add_tarefa(imprimir, "imprimir", 50, 1, &t0);
- //add_tarefa(imprimir2, "imprimir2", 100, 1, &t1);
- //add_tarefa(imprimir3, "imprimir3", 200, 1, &t2);
- add_tarefa(piscar, "piscar", 50, 1, &t3);
+ add_tarefa(imprimir, "imprimir", 50, 3, &t0);
+ add_tarefa(imprimir2, "imprimir2", 100, 1, &t1);
+ add_tarefa(imprimir3, "imprimir3", 200, 1, &t2);
+ add_tarefa(piscar, "piscar", 50, 2, &t3);
 
  add_tarefa(SineTask, "SineTask",20,1, &sineTaskH);
                 
@@ -48,19 +48,17 @@ void loop() {
 //Rotinas das tarefas
 void piscar(){  
   // Ativamos o pino 13 (colocando 5v nele)  
-  Serial.println("piscar LED HIGH");
   digitalWrite(13, HIGH);
   
   // Aguardamos 1 segundo
-  delay(100);
+  delay(500);
 
   // Desligamos o pino 13
   digitalWrite(13, LOW);
   
 
   // Aguardamos mais um segundo
-  delay(100);
-  Serial.println("piscar LED LOW"); 
+  delay(500);
 }
 
 
@@ -91,12 +89,11 @@ void imprimir3(){
 }
 
 void SineTask() {
-    Serial.println("seno in");
     unsigned int stime=0, etime=0;
     pinMode(AOUT, OUTPUT);
     unsigned int outpv = 0;
     unsigned int period = 0;
-    //while(1) {
+    while(1) {
         stime = millis();
         for(period = 0; period < 16; ++period){
             etime = millis();
@@ -104,6 +101,5 @@ void SineTask() {
             analogWrite(AOUT, outpv);
             delay(33);
         }
-   // }
-   Serial.println("seno out");
+    }
 }

@@ -117,7 +117,7 @@ asm volatile (\
 
 
 //variáveis globais
-int tarefa_exec = 0;  // tarefa em execução
+int id_tarefa_exec = 0;  // tarefa em execução
 int tempo_em_exec = 0; //tempo em execução do processo atual
 Tarefa **processos;    // buffer de tarefas
 int quantTarefas = 0; //quantidade de tarefas
@@ -164,24 +164,52 @@ void setupEOS2560(){
   configuraTimer();
 }
 
+//Ordenar tarefas por prioridade
+void ordenarTarefas(){
+  Tarefa temp;
+   for (int i = 0; i< quantTarefas-1; i++){
+    for (int j=i+1; j< quantTarefas; j++){
+       if (processos[j]->prioridade < processos[i]->prioridade){
+          temp.nome       = processos[i]->nome;
+          temp.codigo     = processos[i]->codigo;
+          temp.periodo    = processos[i]->periodo;
+          temp.prioridade = processos[i]->prioridade;
+          temp.estado     = processos[i]->estado;
+
+          processos[i]->nome       = processos[j]->nome;
+          processos[i]->codigo     = processos[j]->codigo;
+          processos[i]->periodo    = processos[j]->periodo;
+          processos[i]->prioridade = processos[j]->prioridade;
+          processos[i]->estado     = processos[j]->estado;
+
+          processos[j]->nome       = temp.nome;
+          processos[j]->codigo     = temp.codigo;
+          processos[j]->periodo    = temp.periodo;
+          processos[j]->prioridade = temp.prioridade;
+          processos[j]->estado     = temp.estado;
+       }
+     }
+   }
+}
+
 //execução do código das tarefas e troca de contexto
 void executar(){
   while(true){  
-    if(processos[tarefa_exec]->estado == ESPERA){                                //tarefa deve ser executada
-      processos[tarefa_exec]->estado = EXECUCAO;                                //processo está em execução
-      processos[tarefa_exec]->codigo();                                         //execucao da tarefa
-      prazoTarefas[tarefa_exec] = processos[tarefa_exec]->periodo;              //reinicia prazo para execução
-      processos[tarefa_exec]->estado = BLOQUEADO;
+    if(processos[id_tarefa_exec]->estado == ESPERA){                                //tarefa deve ser executada
+      processos[id_tarefa_exec]->estado = EXECUCAO;                                //processo está em execução
+      processos[id_tarefa_exec]->codigo();                                         //execucao da tarefa
+      prazoTarefas[id_tarefa_exec] = processos[id_tarefa_exec]->periodo;              //reinicia prazo para execução
+      processos[id_tarefa_exec]->estado = BLOQUEADO;
       tempo_em_exec = 0;                                                       //reinicia tempo em execução
     } 
     //proxima tarefa
-    tarefa_exec  = proxima_tarefa(); 
+    id_tarefa_exec  = proximaTarefa(); 
   }
 }
 
 
 //procura a tarefa com menor prazo para executar
-int proxima_tarefa(){
+int proximaTarefa(){
   int menor = prazoTarefas[0];
   int i_menor = 0;
   for (int i = 0; i < quantTarefas; i++){
@@ -210,12 +238,12 @@ void relogio(){
 //verifica se alguma tarefa tomou a cpu e não permite execução de outros
 void verificaTarefas(){
   if(tempo_em_exec >= TEMPO_MAX_EXECUCAO){
-          prazoTarefas[tarefa_exec] = processos[tarefa_exec]->periodo;            
-          processos[tarefa_exec]->estado = BLOQUEADO;                                                       
+          prazoTarefas[id_tarefa_exec] = processos[id_tarefa_exec]->periodo;            
+          processos[id_tarefa_exec]->estado = BLOQUEADO;                                                       
           tempo_em_exec = 0;
-          tarefa_exec  = proxima_tarefa();
+          id_tarefa_exec  = proximaTarefa();
           portSAVE_CONTEXT();
-            processos[tarefa_exec]->codigo()//reinicia tempo em execução    
+            processos[id_tarefa_exec]->codigo()//reinicia tempo em execução    
           portRESTORE_CONTEXT();
   }   
 }
